@@ -7,13 +7,14 @@ import {
 } from '@reduxjs/toolkit';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
-import { firebaseReducer, lazyLoadEpics } from './lazyLoading';
+import { lazyLoadEpics } from './lazyLoading';
+import { AuthReducer } from 'store/Authentication';
 
 export const epic$ = new BehaviorSubject(combineEpics(...lazyLoadEpics));
 
 const createStore = (dependencies = {}, initialState) => {
   const rootReducer = combineReducers({
-    firebase: firebaseReducer,
+    authentication: AuthReducer,
   });
 
   const epicMiddleware = createEpicMiddleware({ dependencies });
