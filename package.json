@@ -17,6 +17,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
     "firebase": "7.24.0",
+    "framer-motion": "^2.9.4",
     "gatsby": "^2.24.79",
     "gatsby-plugin-root-import": "2.0.5",
     "gatsby-plugin-webpack-size": "1.0.0",
