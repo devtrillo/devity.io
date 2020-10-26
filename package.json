@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
+    "@sentry/react": "^5.27.1",
+    "@sentry/tracing": "^5.27.1",
     "firebase": "7.24.0",
     "framer-motion": "^2.9.4",
     "gatsby": "^2.24.79",
@@ -27,6 +29,7 @@
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
     "redux-observable": "^1.2.0",
+    "redux-persist": "^6.0.0",
     "rxfire": "^3.13.5",
     "rxjs": "^6.6.3"
   },

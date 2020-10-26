@@ -1,9 +1,14 @@
 import { ofType } from 'redux-observable';
-import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
+import { catchError, exhaustMap, filter, map, switchMap } from 'rxjs/operators';
 import { forkJoin, from, of } from 'rxjs';
 
 import { epic$ } from 'store';
-import { LAZY_LOAD_COMPLETE, LAZY_LOAD_EPICS, LAZY_LOAD_INIT } from './actions';
+import {
+  LAZY_LOAD_COMPLETE,
+  LAZY_LOAD_EPICS,
+  LAZY_LOAD_INIT,
+  SENTRY_LOADED,
+} from './actions';
 
 const lazyLoadFirebase = firebase$ => {
   const config = {
@@ -43,11 +48,39 @@ const lazyLoadFirebaseEpic = (action$, state$, { firebase$ }) =>
     exhaustMap(() => lazyLoadFirebase(firebase$)),
   );
 
+const lazyLoadSentry = (action$, state$, { sentry$ }) =>
+  action$.pipe(
+    ofType(LAZY_LOAD_INIT.type),
+    filter(() => process.env.NODE_ENV === 'production'),
+    exhaustMap(() =>
+      forkJoin([
+        from(import('@sentry/react')),
+        from(import('@sentry/tracing')),
+      ]).pipe(
+        map(([Sentry, { Integrations }]) => {
+          Sentry.init({
+            dsn:
+              'https://fea9d643474f4a7db2d8691508a8da14@o466270.ingest.sentry.io/5480378',
+            integrations: [new Integrations.BrowserTracing()],
+            tracesSampleRate: 1.0,
+            environment: process.env.NODE_ENV,
+          });
+          sentry$.next(Sentry);
+          return SENTRY_LOADED();
+        }),
+      ),
+    ),
+  );
+
 const lazyLoadEpics = action$ =>
   action$.pipe(
     ofType(LAZY_LOAD_EPICS.type),
     switchMap(() =>
-      forkJoin([from(import('store/Authentication/epics'))]).pipe(
+      forkJoin([
+        from(import('store/Authentication/epics')),
+
+
+      ]).pipe(
         map(epics => {
           for (let i = 0; i < epics.length; i++) {
             const epicsModule = epics[i].default;
@@ -62,4 +95,4 @@ const lazyLoadEpics = action$ =>
     ),
   );
 
-export default [lazyLoadFirebaseEpic, lazyLoadEpics];
+export default [lazyLoadFirebaseEpic, lazyLoadEpics, lazyLoadSentry];

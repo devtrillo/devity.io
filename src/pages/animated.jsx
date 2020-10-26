@@ -6,7 +6,12 @@ const container = {
   enter: {
     transition: {
       when: 'beforeChildren',
-      staggerChildren: 0.3,
+      staggerChildren: 0.1,
+    },
+  },
+  exit: {
+    transition: {
+      staggerChildren: 0.05,
     },
   },
 };
@@ -15,6 +20,10 @@ const item = {
   enter: {
     y: 0,
     opacity: 1,
+  },
+  exit: {
+    y: -20,
+    opacity: 0,
   },
 };
 
