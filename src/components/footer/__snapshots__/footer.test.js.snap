@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The footer component should not change 1`] = `
+<div>
+  <footer
+    class="footer"
+  >
+    Footer
+  </footer>
+</div>
+`;

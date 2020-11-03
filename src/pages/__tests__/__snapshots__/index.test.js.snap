@@ -4,6 +4,11 @@ exports[`The homePage should not change 1`] = `
 <div>
   <div>
     Hello world!
+    <a
+      href="/animated"
+    >
+      ANIMATED
+    </a>
   </div>
 </div>
 `;

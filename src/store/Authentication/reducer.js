@@ -1,8 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED,
-} from 'store/Authentication/actions';
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './actions';
 
 const initialState = {};
 

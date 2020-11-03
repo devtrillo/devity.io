@@ -1,7 +1,6 @@
 import { compose } from 'ramda';
 import { createAction } from '@reduxjs/toolkit';
-
-import { createNamedAction } from 'utils/redux';
+import { createNamedAction } from '../../utils/redux';
 
 const firebaseName = createNamedAction('Auth');
 const namedAction = compose(createAction, firebaseName);

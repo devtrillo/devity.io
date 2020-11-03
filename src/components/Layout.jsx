@@ -4,16 +4,17 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ReplaySubject } from 'rxjs';
 
-import createStore from 'store';
-import { LAZY_LOAD_INIT } from 'store/lazyLoading';
-import Header from 'components/Header';
 import '../style/global.css';
+import '../style/post.css';
+import { LAZY_LOAD_INIT } from '../store/lazyLoading/actions';
+import Header from './Header';
+import createStore from '../store';
 
 const firebase$ = new ReplaySubject(1);
 const sentry$ = new ReplaySubject(1);
 
-const Shortcuts = lazy(() => import('components/Shortcuts'));
-const Footer = lazy(() => import('components/footer'));
+const Shortcuts = lazy(() => import('./Shortcuts'));
+const Footer = lazy(() => import('./footer'));
 
 export const RootLayout = ({ children }) => {
   const { store, persistor } = createStore({ firebase$, sentry$ });
@@ -28,6 +29,9 @@ export const RootLayout = ({ children }) => {
         {children}
         <Suspense fallback={null}>
           <Shortcuts />
+        </Suspense>
+        <Suspense fallback={null}>
+          <Footer />
         </Suspense>
       </PersistGate>
     </Provider>
@@ -55,6 +59,7 @@ const variants = {
 export const PageLayout = ({ children, location }) => (
   <AnimatePresence exitBeforeEnter>
     <motion.main
+      className="screen"
       key={location.pathname}
       variants={variants}
       initial="initial"
@@ -62,9 +67,6 @@ export const PageLayout = ({ children, location }) => (
       exit="exit"
     >
       {children}
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
     </motion.main>
   </AnimatePresence>
 );

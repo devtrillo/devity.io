@@ -2,11 +2,8 @@ import { ofType } from 'redux-observable';
 import { authState } from 'rxfire/auth';
 import { exhaustMap, map, withLatestFrom } from 'rxjs/operators';
 
-import { LAZY_LOAD_COMPLETE } from 'src/store/lazyLoading';
-import {
-  SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED,
-} from 'src/store/Authentication/actions';
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './actions';
+import { LAZY_LOAD_COMPLETE } from '../lazyLoading/actions';
 
 const customAuth = firebase =>
   authState(firebase.auth()).pipe(

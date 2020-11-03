@@ -21,14 +21,14 @@ import {
 } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
-
-import { lazyLoadEpics } from './lazyLoading';
-import { AuthReducer } from 'store/Authentication';
-import { themeReducer } from 'store/themes';
+import { AuthReducer } from './Authentication';
+import { themeReducer } from './themes';
+import { lazyLoadEpics } from './lazyLoading/epics';
 
 const persistConfig = {
   key: 'devity-io',
   storage,
+  blacklist: ['modal'],
 };
 
 const rootReducer = combineReducers({
@@ -36,27 +36,25 @@ const rootReducer = combineReducers({
   theme: themeReducer,
 });
 
-export const epic$ = new BehaviorSubject(combineEpics(...lazyLoadEpics));
+export const epic$ = new BehaviorSubject(combineEpics(lazyLoadEpics));
 
 const rootEpic = (action$, state$, dependencies) =>
   epic$.pipe(
     mergeMap(epic => epic(action$, state$, dependencies)),
     catchError((err, source) => {
       if (process.env.NODE_ENV === 'development') console.error(err);
-      return process.env.NODE_ENV === 'development'
-        ? source
-        : epic$.pipe(
-            withLatestFrom(dependencies.sentry$),
-            concatMap(([, sentry]) => {
-              sentry.addBreadcrumb({
-                category: 'epics',
-                level: sentry.Severity.Info,
-                message: 'Getting error on an epic :)',
-              });
-              sentry.captureException(err);
-              return source;
-            }),
-          );
+      return epic$.pipe(
+        withLatestFrom(dependencies.sentry$),
+        concatMap(([, sentry]) => {
+          sentry.addBreadcrumb({
+            category: 'epics',
+            level: sentry.Severity.Info,
+            message: 'Getting error on an epic :)',
+          });
+          sentry.captureException(err);
+          return source;
+        }),
+      );
     }),
   );
 
@@ -84,10 +82,3 @@ const createStore = (dependencies = {}, initialState) => {
 };
 
 export default createStore;
-
-/**
- * tope nivel 1
- * 38,400
- *
- * 3K abajo de un nivel 3
- */

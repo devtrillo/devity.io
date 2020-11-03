@@ -1,8 +1,7 @@
-import { createNamedAction } from 'utils/redux';
 import { compose } from 'ramda';
 import { createAction } from '@reduxjs/toolkit';
+import { createNamedAction } from '../../utils/redux';
 
-const themes = createNamedAction('[ Themes ]');
-const namedAction = compose(createAction, themes);
+const namedAction = compose(createAction, createNamedAction('Themes'));
 
 export const CYCLE_THEME = namedAction('Cycle theme');

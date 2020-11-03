@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { CYCLE_THEME } from 'store/themes/actions';
+import { CYCLE_THEME } from './actions';
 
 const themeReducer = createReducer('light', {
   [CYCLE_THEME]: state => {

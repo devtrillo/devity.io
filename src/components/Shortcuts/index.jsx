@@ -1,46 +1,21 @@
-import React, { useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import React from 'react';
 import { Link } from 'gatsby';
-
+import clsx from 'clsx';
 import style from './shortcuts.module.css';
-import Home from 'components/icons/Home';
+import PostsIcon from '../icons/Posts';
+import Home from '../icons/Home';
 
-const Shortcuts = () => {
-  const [show, setShow] = useState(true);
-  window.show = setShow;
-  const reducedMotion = useReducedMotion();
-
-  const navBarVariants = {
-    hidden: { y: reducedMotion ? 0 : '100%', opacity: reducedMotion ? 0 : 1 },
-    show: { y: 0, opacity: reducedMotion ? 1 : 1 },
-  };
-
-  const linkVariants = {
-    hidden: {},
-    show: {},
-  };
-  return (
-    <motion.nav
-      variants={navBarVariants}
-      initial="hidden"
-      animate={show ? 'show' : 'hidden'}
-      className={style.navbar}
-    >
-      <motion.div variants={linkVariants}>
-        <Home />
-        <Link to="/"> Home</Link>
-      </motion.div>
-      <motion.div variants={linkVariants}>
-        <Link to="/"> Home</Link>
-      </motion.div>
-      <motion.div variants={linkVariants}>
-        <Link to="/"> Home</Link>
-      </motion.div>
-      <motion.div variants={linkVariants}>
-        <Link to="/"> Home</Link>
-      </motion.div>
-    </motion.nav>
-  );
-};
+const Shortcuts = () => (
+  <nav className={clsx(style.navbar, style.show)}>
+    <Link to="/">
+      <Home />
+      <span>Home</span>
+    </Link>
+    <Link to="/posts">
+      <PostsIcon />
+      <span>Posts</span>
+    </Link>
+  </nav>
+);
 
 export default Shortcuts;

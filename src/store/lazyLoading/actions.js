@@ -1,10 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 import { compose } from 'ramda';
+import { createNamedAction } from '../../utils/redux';
 
-import { createNamedAction } from 'utils/redux';
-
-const lazyLoading = createNamedAction('Lazy loading');
-const namedAction = compose(createAction, lazyLoading);
+const namedAction = compose(createAction, createNamedAction('Lazy loading'));
 
 export const LAZY_LOAD_INIT = namedAction('Init lazyLoading');
 export const LAZY_LOAD_COMPLETE = namedAction('Complete');

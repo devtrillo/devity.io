@@ -1,4 +1,33 @@
 :root {
   --primary-color: #2ea5e0;
+  --primary-color-dark: #207199;
+  --primary-text: #000000;
+  --primary-text-invert: #ffffff;
   --primary-shadow-color: rgba(54, 188, 255, 0.4);
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.screen {
+  height: 100%;
+  grid-area: screen;
+}
+
+#___gatsby {
+  display: grid;
+  grid-template-rows: 70px 1fr 7vh;
+  grid-template-areas: 'header' 'screen' 'footer';
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  transition: height 250ms ease-in-out;
+}
+
+@media screen and (max-width: 800px) {
+  #___gatsby {
+    height: calc(100vh - 62px);
+  }
 }

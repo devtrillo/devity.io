@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageLayout, RootLayout } from 'components/Layout';
+import { PageLayout, RootLayout } from './src/components/Layout';
 
 const transitionDelay = 500;
 
@@ -9,6 +9,7 @@ export const wrapRootElement = ({ element, props }) => {
 export const wrapPageElement = ({ element, props }) => {
   return <PageLayout {...props}>{element}</PageLayout>;
 };
+
 export const shouldUpdateScroll = ({
   routerProps: { location },
   getSavedScrollPosition,

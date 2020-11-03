@@ -1,18 +1,42 @@
 const path = require('path');
-
+console.warn(__dirname);
 module.exports = {
   /* Your site config here */
   plugins: [
     'gatsby-plugin-webpack-size',
     {
-      resolve: 'gatsby-plugin-root-import',
+      resolve: 'gatsby-source-filesystem',
       options: {
-        src: path.join(__dirname, 'src'),
-        pages: path.join(__dirname, 'src/pages'),
-        hooks: path.join(__dirname, 'src/hooks'),
-        store: path.join(__dirname, 'src/store'),
-        components: path.join(__dirname, 'src/components'),
-        utils: path.join(__dirname, 'src/utils'),
+        name: 'posts',
+        path: `${__dirname}/src/posts`,
+      },
+    },
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-classes`,
+            options: {
+              classMap: {
+                'heading[depth=1]': 'title',
+                'heading[depth=2]': 'subtitle',
+                a: 'link',
+              },
+            },
+          },
+          {
+            resolve: 'gatsby-remark-table-of-contents',
+            options: {
+              exclude: 'Table of Contents',
+              tight: false,
+              fromHeading: 1,
+              toHeading: 6,
+              className: 'table-of-contents',
+            },
+          },
+          'gatsby-remark-autolink-headers',
+        ],
       },
     },
   ],
